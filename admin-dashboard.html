@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Donut Manis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-amber-900 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-2xl font-bold">🍩 Donut Manis - Dashboard Admin</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-amber-200">Admin</span>
+                    <button onclick="logout()" 
+                            class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Total Pesan</p>
+                        <h3 class="text-3xl font-bold text-amber-900" id="totalMessages">0</h3>
+                    </div>
+                    <div class="text-4xl">✉️</div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Pesan Hari Ini</p>
+                        <h3 class="text-3xl font-bold text-amber-900" id="todayMessages">0</h3>
+                    </div>
+                    <div class="text-4xl">📊</div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Pesan Minggu Ini</p>
+                        <h3 class="text-3xl font-bold text-amber-900" id="weekMessages">0</h3>
+                    </div>
+                    <div class="text-4xl">📈</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-amber-900">Pesan dari Pelanggan</h2>
+                <button onclick="clearAllMessages()" 
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm">
+                    Hapus Semua Pesan
+                </button>
+            </div>
+            
+            <!-- Filter -->
+            <div class="mb-6">
+                <select id="filterMessages" onchange="filterMessages()" 
+                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-amber-600">
+                    <option value="all">Semua Pesan</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="week">Minggu Ini</option>
+                    <option value="month">Bulan Ini</option>
+                </select>
+            </div>
+
+            <!-- Messages List -->
+            <div id="messagesList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Belum ada pesan masuk</p>
+            </div>
+        </div>
+
+        <!-- Back to Main Site -->
+        <div class="mt-8 text-center">
+            <a href="index.html" class="text-amber-800 hover:text-amber-900 font-medium">
+                ← Kembali ke Halaman Utama
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Check if logged in
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('adminLoggedIn') !== 'true') {
+                window.location.href = 'admin-login.html';
+            } else {
+                loadMessages();
+            }
+        });
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+            displayMessages(messages);
+            updateStats(messages);
+        }
+
+        function displayMessages(messages) {
+            const messagesList = document.getElementById('messagesList');
+            
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada pesan masuk</p>';
+            } else {
+                messagesList.innerHTML = '';
+                // Reverse to show newest first
+                const reversedMessages = [...messages].reverse();
+                
+                reversedMessages.forEach((msg, index) => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 shadow border-l-4 border-amber-600';
+                    messageDiv.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h5 class="font-bold text-amber-900 text-lg">${msg.name}</h5>
+                                <p class="text-sm text-gray-500">${msg.timestamp}</p>
+                            </div>
+                            <button onclick="deleteMessage(${messages.length - 1 - index})" 
+                                    class="text-red-500 hover:text-red-700">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700">📞 Telepon:</p>
+                                <p class="text-gray-800">${msg.phone}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700">✉️ Email:</p>
+                                <p class="text-gray-800">${msg.email}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700 mb-1">💬 Pesan:</p>
+                            <p class="text-gray-800 bg-white rounded p-3">${msg.message}</p>
+                        </div>
+                    `;
+                    messagesList.appendChild(messageDiv);
+                });
+            }
+        }
+
+        function updateStats(messages) {
+            const total = messages.length;
+            document.getElementById('totalMessages').textContent = total;
+
+            const today = new Date().toLocaleDateString('id-ID');
+            const todayCount = messages.filter(msg => {
+                const msgDate = new Date(msg.timestamp).toLocaleDateString('id-ID');
+                return msgDate === today;
+            }).length;
+            document.getElementById('todayMessages').textContent = todayCount;
+
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const weekCount = messages.filter(msg => {
+                const msgDate = new Date(msg.timestamp);
+                return msgDate >= weekAgo;
+            }).length;
+            document.getElementById('weekMessages').textContent = weekCount;
+        }
+
+        function filterMessages() {
+            const filter = document.getElementById('filterMessages').value;
+            const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+            let filtered = messages;
+
+            const now = new Date();
+
+            if (filter === 'today') {
+                const today = now.toLocaleDateString('id-ID');
+                filtered = messages.filter(msg => {
+                    const msgDate = new Date(msg.timestamp).toLocaleDateString('id-ID');
+                    return msgDate === today;
+                });
+            } else if (filter === 'week') {
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                filtered = messages.filter(msg => {
+                    const msgDate = new Date(msg.timestamp);
+                    return msgDate >= weekAgo;
+                });
+            } else if (filter === 'month') {
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                filtered = messages.filter(msg => {
+                    const msgDate = new Date(msg.timestamp);
+                    return msgDate >= monthAgo;
+                });
+            }
+
+            displayMessages(filtered);
+        }
+
+        function deleteMessage(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
+                let messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.splice(index, 1);
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                loadMessages();
+            }
+        }
+
+        function clearAllMessages() {
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA pesan? Tindakan ini tidak dapat dibatalkan!')) {
+                localStorage.setItem('contactMessages', '[]');
+                loadMessages();
+            }
+        }
+    </script>
+</body>
+</html>
