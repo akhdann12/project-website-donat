@@ -1,11 +1,605 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Atria Donuts - Company Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        donutBrown: '#4B2C20',
+                        donutCream: '#F5E6CA',
+                        donutGold: '#D4A373',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .product-modal {
+            display: none;
+        }
+        .product-modal.active {
+            display: flex;
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+    </style>
 </head>
-<body>
-    
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-amber-900 text-white shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold">🍩 Atria Donuts</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="hover:text-amber-200 transition">Home</a>
+                    <a href="#about" class="hover:text-amber-200 transition">Tentang</a>
+                    <a href="#products" class="hover:text-amber-200 transition">Produk</a>
+                    <a href="#contact" class="hover:text-amber-200 transition">Kontak</a>
+                    <a href="admin-login.html" class="hover:text-amber-200 transition">Admin</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="mobile-menu fixed top-0 left-0 w-64 h-full bg-amber-800 text-white z-40 shadow-2xl md:hidden">
+        <div class="p-6">
+            <button onclick="toggleMobileMenu()" class="mb-8 text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="flex flex-col space-y-4">
+                <a href="#home" onclick="toggleMobileMenu()" class="text-lg hover:text-amber-200 transition">Home</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="text-lg hover:text-amber-200 transition">Tentang</a>
+                <a href="#products" onclick="toggleMobileMenu()" class="text-lg hover:text-amber-200 transition">Produk</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-lg hover:text-amber-200 transition">Kontak</a>
+                <a href="admin-login.html" class="text-lg hover:text-amber-200 transition">Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for mobile menu -->
+    <div class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 z-30" id="overlay"></div>
+
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center container mx-auto px-6 py-12">
+        <div class="md:w-1/2 mb-8 md:mb-0">
+            <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=800&q=80" alt="Delicious Donut" class="rounded-3xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+        </div>
+        <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+            <h2 class="text-5xl md:text-7xl font-black mb-4 leading-tight">Atria <br><span class="text-donutGold">zDonuts</span></h2>
+            <p class="text-xl mb-6 opacity-80">Dibuat dengan cinta, disajikan dengan rasa. Donat artisan paling lembut di kota dengan topping yang melimpah.</p>
+            <a href="#products" class="bg-donutBrown text-donutCream px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition">Lihat Menu</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-amber-900 mb-12">Tentang Kami</h2>
+            <div class="max-w-6xl mx-auto">
+                
+                <!-- First Row - Image Left, Text Right -->
+                <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+                    <div class="md:w-1/2">
+                        <img src="https://media.istockphoto.com/id/2207852452/id/foto/sekelompok-pembuat-roti-yang-bekerja-di-pabrik-donat.webp?a=1&b=1&s=612x612&w=0&k=20&c=W7GcG6T4fs0n6Xw0IouHwnY4x88AQGewgVlNc6sMUU8=" alt="Proses Pembuatan Donat" class="rounded-2xl shadow-lg w-full">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold text-amber-900 mb-4">Apa yang Kami Jual?</h3>
+                        <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                            Donut Manis menyediakan berbagai jenis donat premium dengan topping dan rasa yang beragam. Mulai dari donat klasik dengan glazur manis, donat cokelat lumer, hingga donat dengan berbagai kreasi unik yang selalu baru dan menarik.
+                        </p>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            Setiap donat dibuat dengan bahan berkualitas tinggi, tanpa pengawet, dan diproduksi fresh setiap hari untuk memastikan kelezatan dan kesegaran maksimal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Second Row - Text Left, Image Right -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-8 mb-12">
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1564136442889-b2ae6f57dc31?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Menggoreng Donat" class="rounded-2xl shadow-lg w-full">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold text-amber-900 mb-4">Proses Berkualitas</h3>
+                        <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                            Kami menggunakan metode pembuatan tradisional yang telah terbukti menghasilkan donat dengan tekstur sempurna. Setiap adonan dicampur dengan presisi dan digoreng pada suhu optimal untuk menghasilkan tekstur yang empuk di dalam dan renyah di luar.
+                        </p>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            Tim pembuat donat kami berpengalaman dan terlatih untuk memastikan setiap donat memenuhi standar kualitas tertinggi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Third Row - Image Left, Text Right -->
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/2">
+                        <img src="https://plus.unsplash.com/premium_photo-1726754426139-48a6d490f69f?q=80&w=1083&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dekorasi Donat" class="rounded-2xl shadow-lg w-full">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-3xl font-bold text-amber-900 mb-4">Kreativitas Tanpa Batas</h3>
+                        <p class="text-gray-700 text-lg leading-relaxed mb-4">
+                            Setiap donat dihias dengan penuh kreativitas menggunakan topping premium seperti cokelat Belgian, glazur strawberry segar, matcha dari Jepang, dan masih banyak lagi. Kami selalu berinovasi dengan varian rasa baru untuk memberikan pengalaman yang berbeda setiap kunjungan.
+                        </p>
+                        <div class="grid grid-cols-3 gap-4 mt-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🍩</div>
+                                <h4 class="font-bold text-amber-900 text-sm">Bahan Premium</h4>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">👨‍🍳</div>
+                                <h4 class="font-bold text-amber-900 text-sm">Dibuat Fresh</h4>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">⭐</div>
+                                <h4 class="font-bold text-amber-900 text-sm">Rasa Istimewa</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-amber-900 mb-12">Produk Kami</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(1)">
+                    <img src="https://images.unsplash.com/photo-1685779923180-b78b6b8231b9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZG9uYXQlMjBnbGF6dXIlMjBrbGFzaWt8ZW58MHx8MHx8fDA%3D alt="Donut Glazur Klasik" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Glazur Klasik</h3>
+                        <p class="text-gray-600">Donut klasik dengan glazur manis yang lumer di mulut</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 15.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(2)">
+                    <img src="https://images.unsplash.com/photo-1639710743625-c1a254dc79fe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9uYXQlMjBjb2tsYXR8ZW58MHx8MHx8fDA%3D" alt="Donut Cokelat Premium" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Cokelat Premium</h3>
+                        <p class="text-gray-600">Donut dengan topping cokelat Belgian yang mewah</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 18.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(3)">
+                    <img src="https://media.istockphoto.com/id/1308291972/id/foto/donat-terbang-terisolasi-di-latar-belakang-putih.webp?a=1&b=1&s=612x612&w=0&k=20&c=WIk3726_sseN_VVqgMMk6KYNr7lG0-CiUQUTO0ew16c=" alt="Donut Sprinkles Rainbow" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Sprinkles Rainbow</h3>
+                        <p class="text-gray-600">Donut ceria dengan taburan warna-warni</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 16.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(4)">
+                    <img src="https://media.istockphoto.com/id/1158977822/id/foto/donat-buatan-sendiri-yang-baru-dipanggang-dengan-es-stroberi-merah-muda.webp?a=1&b=1&s=612x612&w=0&k=20&c=q02pqZRWvVomsZpNx6y4tBQUFVWr4lyo4J5jHp6yWP0=" alt="Donut Strawberry Delight" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Strawberry Delight</h3>
+                        <p class="text-gray-600">Donut dengan glazur strawberry segar</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 17.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(5)">
+                    <img src="https://media.istockphoto.com/id/1146148322/id/foto/permen-matcha-hijau.webp?a=1&b=1&s=612x612&w=0&k=20&c=vAN4etpKYK-o7xv6RNLzgM1-NcSKVupRhFDPZ2MTlzQ=" alt="Donut Matcha Green Tea" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Matcha Green Tea</h3>
+                        <p class="text-gray-600">Donut dengan rasa matcha premium dari Jepang</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 20.000</p>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer" onclick="showProductModal(6)">
+                    <img src="https://moversandbakers.co.uk/wp-content/uploads/2025/01/Nutella-Donuts_2830.jpg" alt="Donut Nutella Lovers" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-amber-900 mb-2">Donut Nutella Lovers</h3>
+                        <p class="text-gray-600">Donut dengan topping Nutella yang melimpah</p>
+                        <p class="text-amber-800 font-bold mt-4 text-xl">Rp 22.000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="product-modal fixed inset-0 bg-black bg-opacity-50 justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-3xl font-bold text-amber-900" id="modalTitle"></h3>
+                    <button onclick="closeProductModal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <img id="modalImage" src="" alt="" class="w-full h-96 object-cover rounded-xl mb-6">
+                <p class="text-gray-700 text-lg mb-4" id="modalDescription"></p>
+                <div class="bg-amber-50 rounded-xl p-6 mb-4">
+                    <h4 class="font-bold text-amber-900 mb-2">Detail Produk:</h4>
+                    <ul class="space-y-2 text-gray-700" id="modalDetails"></ul>
+                    <p class="text-2xl font-bold text-amber-800 mt-6" id="modalPrice"></p>
+                </div>
+                
+                <!-- Customer Ratings Section -->
+                <div class="bg-white border-2 border-amber-100 rounded-xl p-6">
+                    <h4 class="font-bold text-amber-900 mb-4">Rating Pelanggan</h4>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-amber-900" id="modalRating"></div>
+                            <div class="text-yellow-500 text-2xl" id="modalStars"></div>
+                            <p class="text-sm text-gray-600 mt-1" id="modalReviewCount"></p>
+                        </div>
+                        <div class="flex-1">
+                            <div class="space-y-2" id="modalRatingBars"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Customer Reviews -->
+                    <div class="border-t border-amber-100 pt-4">
+                        <h5 class="font-bold text-amber-900 mb-3">Review Pelanggan:</h5>
+                        <div class="space-y-4" id="modalReviews"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-amber-900 mb-12">Hubungi Kami</h2>
+            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-2xl font-bold text-amber-900 mb-6">Informasi Kontak</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-amber-800 text-2xl">📍</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Alamat</h4>
+                                <p class="text-gray-600">Jl. Atria Donuts No. 123<br>Jakarta Selatan, 12345</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="text-amber-800 text-2xl">📞</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Telepon</h4>
+                                <p class="text-gray-600">+62 812-3456-7890</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="text-amber-800 text-2xl">✉️</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Email</h4>
+                                <p class="text-gray-600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4f262129200f2b20213a3b222e21263c612c2022">[email&#160;protected]</a></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="text-amber-800 text-2xl">🕒</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Jam Buka</h4>
+                                <p class="text-gray-600">Senin - Minggu: 08.00 - 21.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <h3 class="text-2xl font-bold text-amber-900 mb-6">Kirim Pesan</h3>
+                    <form id="contactForm" onsubmit="submitContactForm(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Nama</label>
+                            <input type="text" id="contactName" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">No. Telepon</label>
+                            <input type="tel" id="contactPhone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="contactEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Pesan</label>
+                            <textarea id="contactMessage" required rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-800 text-white py-3 rounded-lg font-bold hover:bg-amber-900 transition">
+                            Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">🍩 Atria Donuts</h3>
+                <p class="text-amber-100 mb-4">Kelezatan dalam Setiap Gigitan</p>
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="hover:text-amber-200 transition">Facebook</a>
+                    <a href="#" class="hover:text-amber-200 transition">Instagram</a>
+                    <a href="#" class="hover:text-amber-200 transition">WhatsApp</a>
+                </div>
+                <p class="text-amber-200 text-sm">&copy; 2026 Donut Manis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+        <script>
+        // Product data
+        const products = {
+            1: {
+                title: 'Donut Glazur Klasik',
+                image: 'https://images.unsplash.com/photo-1685779923180-b78b6b8231b9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZG9uYXQlMjBnbGF6dXIlMjBrbGFzaWt8ZW58MHx8MHx8fDA%3D',
+                description: 'Donut klasik dengan glazur manis yang lumer di mulut. Sempurna untuk menemani waktu santai Anda.',
+                details: [
+                    'Tekstur lembut dan empuk',
+                    'Glazur gula premium',
+                    'Dibuat fresh setiap hari',
+                    'Tanpa pengawet'
+                ],
+                price: 'Rp 15.000',
+                rating: 4.8,
+                reviewCount: 127,
+                ratingDistribution: {5: 85, 4: 30, 3: 8, 2: 3, 1: 1},
+                reviews: [
+                    {name: 'Siti Nurhaliza', rating: 5, comment: 'Donat nya enak banget! Glazur nya pas manis nya dan tekstur donat lembut. Pasti balik lagi!', date: '2 hari lalu'},
+                    {name: 'Budi Santoso', rating: 5, comment: 'Favorit saya! Setiap pagi selalu beli ini. Fresh dan tidak terlalu manis.', date: '5 hari lalu'},
+                    {name: 'Maya Anggraini', rating: 4, comment: 'Enak, tapi untuk ukuran nya agak kecil. Overall worth it!', date: '1 minggu lalu'}
+                ]
+            },
+            2: {
+                title: 'Donut Cokelat Premium',
+                image: 'https://images.unsplash.com/photo-1639710743625-c1a254dc79fe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9uYXQlMjBjb2tsYXR8ZW58MHx8MHx8fDA%3D',
+                description: 'Donut dengan topping cokelat Belgian yang mewah dan kaya rasa.',
+                details: [
+                    'Menggunakan cokelat Belgian asli',
+                    'Topping cokelat yang melimpah',
+                    'Tekstur premium',
+                    'Rasa cokelat yang kaya'
+                ],
+                price: 'Rp 18.000',
+                rating: 4.9,
+                reviewCount: 156,
+                ratingDistribution: {5: 120, 4: 28, 3: 5, 2: 2, 1: 1},
+                reviews: [
+                    {name: 'Ahmad Fauzi', rating: 5, comment: 'Cokelat nya premium banget! Tidak terlalu manis, pas untuk pecinta cokelat dark.', date: '1 hari lalu'},
+                    {name: 'Linda Wijaya', rating: 5, comment: 'Best seller memang! Cokelat Belgian nya berasa banget. Recommended!', date: '3 hari lalu'},
+                    {name: 'Rudi Hartono', rating: 5, comment: 'Harga nya sesuai dengan kualitas. Cokelat topping nya melimpah!', date: '1 minggu lalu'}
+                ]
+            },
+            3: {
+                title: 'Donut Sprinkles Rainbow',
+                image: 'https://media.istockphoto.com/id/1308291972/id/foto/donat-terbang-terisolasi-di-latar-belakang-putih.webp?a=1&b=1&s=612x612&w=0&k=20&c=WIk3726_sseN_VVqgMMk6KYNr7lG0-CiUQUTO0ew16c=',
+                description: 'Donut ceria dengan taburan warna-warni yang cocok untuk segala usia.',
+                details: [
+                    'Sprinkles warna-warni',
+                    'Glazur manis',
+                    'Sempurna untuk anak-anak',
+                    'Tampilan yang menarik'
+                ],
+                price: 'Rp 16.000',
+                rating: 4.7,
+                reviewCount: 98,
+                ratingDistribution: {5: 65, 4: 25, 3: 6, 2: 1, 1: 1},
+                reviews: [
+                    {name: 'Dina Puspita', rating: 5, comment: 'Anak saya suka banget! Warna warni nya bikin happy. Rasanya juga enak.', date: '2 hari lalu'},
+                    {name: 'Faisal Rahman', rating: 5, comment: 'Lucu dan enak! Cocok buat kado ulang tahun anak.', date: '4 hari lalu'},
+                    {name: 'Ani Susanti', rating: 4, comment: 'Bagus untuk foto di Instagram hehe. Rasa nya juga oke!', date: '6 hari lalu'}
+                ]
+            },
+            4: {
+                title: 'Donut Strawberry Delight',
+                image: 'https://media.istockphoto.com/id/1158977822/id/foto/donat-buatan-sendiri-yang-baru-dipanggang-dengan-es-stroberi-merah-muda.webp?a=1&b=1&s=612x612&w=0&k=20&c=q02pqZRWvVomsZpNx6y4tBQUFVWr4lyo4J5jHp6yWP0=',
+                description: 'Donut dengan glazur strawberry segar yang manis dan menyegarkan.',
+                details: [
+                    'Rasa strawberry segar',
+                    'Glazur pink cantik',
+                    'Aroma buah yang harum',
+                    'Rasa yang menyegarkan'
+                ],
+                price: 'Rp 17.000',
+                rating: 4.6,
+                reviewCount: 89,
+                ratingDistribution: {5: 58, 4: 22, 3: 7, 2: 1, 1: 1},
+                reviews: [
+                    {name: 'Rina Melati', rating: 5, comment: 'Strawberry nya segar! Tidak artificial taste. Suka banget!', date: '1 hari lalu'},
+                    {name: 'Joko Widodo', rating: 4, comment: 'Enak, tapi kalau bisa strawberry nya lebih banyak lagi.', date: '3 hari lalu'},
+                    {name: 'Sari Dewi', rating: 5, comment: 'Pink nya cantik dan rasa strawberry nya natural. Recommended!', date: '5 hari lalu'}
+                ]
+            },
+            5: {
+                title: 'Donut Matcha Green Tea',
+                image: 'https://media.istockphoto.com/id/1146148322/id/foto/permen-matcha-hijau.webp?a=1&b=1&s=612x612&w=0&k=20&c=vAN4etpKYK-o7xv6RNLzgM1-NcSKVupRhFDPZ2MTlzQ=',
+                description: 'Donut dengan rasa matcha premium dari Jepang yang unik dan istimewa.',
+                details: [
+                    'Matcha premium dari Jepang',
+                    'Rasa yang tidak terlalu manis',
+                    'Warna hijau alami',
+                    'Kaya antioksidan'
+                ],
+                price: 'Rp 20.000',
+                rating: 4.5,
+                reviewCount: 73,
+                ratingDistribution: {5: 45, 4: 20, 3: 6, 2: 1, 1: 1},
+                reviews: [
+                    {name: 'Yuki Tanaka', rating: 5, comment: 'Matcha nya authentic! Sebagai orang Jepang, I approve this!', date: '2 hari lalu'},
+                    {name: 'Dewi Lestari', rating: 4, comment: 'Tidak terlalu manis, cocok untuk yang tidak suka terlalu sweet.', date: '4 hari lalu'},
+                    {name: 'Rizki Pratama', rating: 5, comment: 'Matcha lover wajib coba! Rasa nya premium dan tidak pahit.', date: '1 minggu lalu'}
+                ]
+            },
+            6: {
+                title: 'Donut Nutella Lovers',
+                image: 'https://moversandbakers.co.uk/wp-content/uploads/2025/01/Nutella-Donuts_2830.jpg',
+                description: 'Donut dengan topping Nutella yang melimpah untuk pecinta cokelat hazelnut.',
+                details: [
+                    'Nutella original',
+                    'Topping yang melimpah',
+                    'Kombinasi sempurna',
+                    'Favorit pelanggan'
+                ],
+                price: 'Rp 22.000',
+                rating: 4.9,
+                reviewCount: 142,
+                ratingDistribution: {5: 115, 4: 20, 3: 5, 2: 1, 1: 1},
+                reviews: [
+                    {name: 'Fitri Handayani', rating: 5, comment: 'Nutella nya banyak banget! Worth the price. Paling favorit!', date: '1 hari lalu'},
+                    {name: 'Arief Budiman', rating: 5, comment: 'Nutella lover paradise! Topping nya ga pelit, recommended!', date: '2 hari lalu'},
+                    {name: 'Mega Putri', rating: 5, comment: 'Best donut ever! Kombinasi donut empuk dengan Nutella = perfect!', date: '4 hari lalu'}
+                ]
+            }
+        };
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.mobile-menu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                overlay.classList.remove('pointer-events-none', 'opacity-0');
+                overlay.classList.add('opacity-50');
+            } else {
+                overlay.classList.add('pointer-events-none', 'opacity-0');
+                overlay.classList.remove('opacity-50');
+            }
+        }
+
+        // Product modal functions
+        function showProductModal(productId) {
+            const product = products[productId];
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalImage').src = product.image;
+            document.getElementById('modalDescription').textContent = product.description;
+            document.getElementById('modalPrice').textContent = product.price;
+            
+            const detailsList = document.getElementById('modalDetails');
+            detailsList.innerHTML = '';
+            product.details.forEach(detail => {
+                const li = document.createElement('li');
+                li.textContent = '✓ ' + detail;
+                detailsList.appendChild(li);
+            });
+            
+            // Display rating
+            document.getElementById('modalRating').textContent = product.rating;
+            const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '⯨' : '') + '☆'.repeat(5 - Math.ceil(product.rating));
+            document.getElementById('modalStars').textContent = stars;
+            document.getElementById('modalReviewCount').textContent = `${product.reviewCount} ulasan`;
+            
+            // Display rating bars
+            const ratingBars = document.getElementById('modalRatingBars');
+            ratingBars.innerHTML = '';
+            for (let i = 5; i >= 1; i--) {
+                const count = product.ratingDistribution[i];
+                const percentage = (count / product.reviewCount * 100).toFixed(0);
+                ratingBars.innerHTML += `
+                    <div class="flex items-center gap-2 text-sm">
+                        <span class="w-8">${i}★</span>
+                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                        <span class="w-12 text-gray-600">${count}</span>
+                    </div>
+                `;
+            }
+            
+            // Display reviews
+            const reviewsList = document.getElementById('modalReviews');
+            reviewsList.innerHTML = '';
+            product.reviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'bg-gray-50 rounded-lg p-4';
+                const reviewStars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                reviewDiv.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="font-bold text-gray-800">${review.name}</p>
+                            <p class="text-yellow-500 text-sm">${reviewStars}</p>
+                        </div>
+                        <span class="text-xs text-gray-500">${review.date}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">${review.comment}</p>
+                `;
+                reviewsList.appendChild(reviewDiv);
+            });
+            
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        // Contact form submission
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('contactName').value,
+                phone: document.getElementById('contactPhone').value,
+                email: document.getElementById('contactEmail').value,
+                message: document.getElementById('contactMessage').value,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+            
+            // Get existing messages
+            let messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+            messages.push(formData);
+            localStorage.setItem('contactMessages', JSON.stringify(messages));
+            
+            alert('Terima kasih! Pesan Anda telah terkirim.');
+            document.getElementById('contactForm').reset();
+        }
+
+        // Check login status on page load
+        window.addEventListener('load', function() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
